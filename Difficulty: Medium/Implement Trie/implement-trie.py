@@ -1,40 +1,40 @@
 #User function Template for python3
+class trienode():
+    def __init__(self):
+        self.children = {}
+        self.is_end = False
+        
 class Trie:
     def __init__(self):
         # implement Trie
-        self.alphas = [None] * 26
-        self.end = False
+        self.root = trienode()
         
     def insert(self, word: str):
-        node = self
-        for ch in word:
-            c = ord(ch) - ord('a')
-            if node.alphas[c] == None:
-                node.alphas[c] = Trie()
-            node = node.alphas[c]
-        node.end = True
-        
+       # insert word into Trie
+       node = self.root
+       for char in word:
+           if char not in node.children:
+               node.children[char] = trienode()
+           node = node.children[char]
+       node.is_end = True
 
     def search(self, word: str) -> bool:
-        node = self
-        for ch in word:
-            c = ord(ch) - ord('a')
-            if node == None:
-                return False
-            node = node.alphas[c]
-            
-        return node and node.end
-        
+         # search word in the Trie
+         node = self.root
+         for char in word:
+             if char not in node.children:
+                 return False
+             node = node.children[char]
+         return node.is_end
 
     def isPrefix(self, word: str) -> bool:
-        node = self
-        for ch in word:
-            if node == None:
-                return False
-            c = ord(ch) - ord('a')
-            node = node.alphas[c]
-            
-        return node != None
+         # search prefix word in the Trie
+         node = self.root
+         for char in word:
+             if char not in node.children:
+                 return False
+             node = node.children[char]
+         return True
 
 #{ 
  # Driver Code Starts
