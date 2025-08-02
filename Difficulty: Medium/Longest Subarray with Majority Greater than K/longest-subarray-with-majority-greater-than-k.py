@@ -1,46 +1,18 @@
-#{ 
- # Driver Code Starts
-#Initial Template for Python 3
-
-# } Driver Code Ends
-
-#User function Template for python3
 class Solution:
     def longestSubarray(self, arr, k):
-        t = [1 if i > k else -1 for i in arr]
-        n = len(t)
-        m = 0
-        p = 0
-        a = {}
-        
+        n = len(arr)
+        trans = [1 if x > k else -1 for x in arr]
+        prefix = 0
+        first_occurrence = {0: -1}
+        max_len = 0
         for i in range(n):
-            p = p + t[i]
-            
-            if p > 0:
-                m = i + 1
-                
-            else:
-                if (p-1) in a:
-                    m = max(m,i-a[p-1])
-                    
-                if p not in a:
-                    a[p] = i
-                    
-        return m
-
-
-#{ 
- # Driver Code Starts.
-
-if __name__ == "__main__":
-    t = int(input())
-    while t > 0:
+            prefix += trans[i]
+            if prefix > 0:
+                max_len = i + 1
+            if (prefix - 1) in first_occurrence:
+                prev_index = first_occurrence[prefix - 1]
+                max_len = max(max_len, i - prev_index)
+            if prefix not in first_occurrence:
+                first_occurrence[prefix] = i
         
-        arr = [int(x) for x in input().strip().split()]
-        k = int(input())
-        
-        ob = Solution()
-        print(ob.longestSubarray(arr, k))
-        print("~")
-        t -= 1
-# } Driver Code Ends
+        return max_len
