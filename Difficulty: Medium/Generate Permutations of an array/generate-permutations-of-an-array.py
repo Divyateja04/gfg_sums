@@ -1,0 +1,16 @@
+class Solution:
+    def permuteDist(self, arr):
+        n = len(arr)
+        res = []
+        def permutation(ls, l, visit):
+            if l == n:
+                res.append(ls)
+                return
+            for i in arr:
+                if i not in visit:
+                    visit.add(i)
+                    permutation(ls+[i], l+1, visit)
+                    visit.remove(i)
+        permutation([],0,set())
+        
+        return res
