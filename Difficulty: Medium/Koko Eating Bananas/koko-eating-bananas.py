@@ -1,25 +1,20 @@
-#User function Template for python3
-
-import math
+import numpy as np
 class Solution:
-    def kokoEat(self,arr,k):
-        l,r = 1, max(arr)
+    def kokoEat(self, arr, k):
+        arr = np.array(arr)
         
-        def helper(mid):
-            count = 0
-            
-            for i in arr:
-                count += math.ceil(i/mid)
-            
-            return count <= k
+        low, high = 1, arr.max()
+        ans = high
         
-        ans = 0
-        while l<=r:
-            mid = l + (r-l)//2
-            if helper(mid):
+        while low <= high:
+            mid = (low + high) // 2
+           
+            hours = np.sum(np.ceil(arr / mid))
+            
+            if hours <= k:
                 ans = mid
-                r = mid - 1
+                high = mid - 1
             else:
-                l = mid+1
-        
+                low = mid + 1
+                
         return ans
