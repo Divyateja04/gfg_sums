@@ -1,29 +1,27 @@
 class Solution():
     def maxMinHeight(self, arr, k, w):
-        def is_possible(target):
-            n=len(arr)
-            added=[0]*n
-            curr_add=0
-            ops=0
-            for i in range(n):
-                if i>=w:
-                    curr_add-=added[i-w]
-                if arr[i]+curr_add<target:
-                    need=target-(arr[i]+curr_add)
-                    if ops+need>k:
+        n = len(arr)
+        
+        def is_feasible(height: int) -> bool:
+            changes = [0] * (n + 1)
+            curr_diff = used_water = 0
+            for i, flower in enumerate(arr):
+                curr_diff += changes[i]
+                if (h := flower + curr_diff) < height:
+                    needed = height - h
+                    used_water += needed
+                    if used_water > k:
                         return False
-                    added[i]=need
-                    curr_add+=need
-                    ops+=need
+                    changes[min(i + w, n)] -= needed
+                    curr_diff += needed
             return True
-            
-        low,high=min(arr),min(arr)+k
-        result=low
-        while low<=high:
-            mid=(low + high) // 2
-            if is_possible(mid):
-                result = mid
-                low=mid+1
+        
+        lo = min(arr)
+        hi = lo + k
+        while lo < hi:
+            mid = hi - (hi - lo) // 2
+            if is_feasible(mid):
+                lo = mid
             else:
-                high = mid - 1
-        return result
+                hi = mid - 1
+        return lo
